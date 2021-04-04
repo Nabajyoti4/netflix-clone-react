@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import requests from "./requests";
 import "./Banner.css";
+import Youtube from "react-youtube";
+import movieTrailer from "movie-trailer";
 
 function Banner() {
   const [movie, setMovie] = useState([]);
+    const [trailerUrl, settrailerUrl] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -20,6 +23,34 @@ function Banner() {
 
     fetchData();
   }, []);
+
+    /**
+   * function to fetch movie trailer
+   * @param movie 
+   */
+  const handleClick = (movie) => {
+    console.log(movie.name);
+    if (trailerUrl) {
+      settrailerUrl("");
+    } else {
+      movieTrailer(movie?.name || movie?.title || movie?.original_name || "")
+        .then((url) => {
+           console.log(url);
+          const urlParams = new URLSearchParams(new URL(url).search);
+          console.log(urlParams.get("v"));
+          settrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+    const opts = {
+    height: "390",
+    width: "100%",
+    playerVars: {
+      autoplay: 1,
+    },
+  };
+
 
   function truncate(str, n) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
@@ -45,7 +76,7 @@ function Banner() {
 
         {/** div > 2 buttons */}
         <div className="banner__buttons">
-          <button className="banner__button">Play</button>
+          <button onClick={() => handleClick(movie)} className="banner__button">Play</button>
           <button className="banner__button">My List</button>
         </div>
         {/** description */}
@@ -54,7 +85,12 @@ function Banner() {
         </h1>
       </div>
       <div className="banner--fadeBottom"></div>
+       <div>
+         {trailerUrl && <Youtube videoId={trailerUrl} opts={opts}></Youtube> }
+    </div>
     </header>
+   
+     
   );
 }
 

@@ -5,6 +5,11 @@ The app consist of a banner with random movie name and picture , below that row 
 On click on movie picture you can see a trailer, which is build using
 `react-youtube` package
 
+## Hosting URL
+
+`https://netflix-clone-5bd65.web.app`
+
+
 ## Available Scripts
 
 In the project directory, you can run:

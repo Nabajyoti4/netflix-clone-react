@@ -10,8 +10,7 @@ import { auth } from "./firebase";
 import Profile from "./pages/Profile";
 
 function App() {
-  const authUserState = useSelector((state) => state.user);
-  const user = authUserState;
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +28,7 @@ function App() {
     });
 
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="app">
@@ -38,11 +37,11 @@ function App() {
           <Login></Login>
         ) : (
           <Switch>
+            <Route path="/profile">
+              <Profile></Profile>
+            </Route>
             <Route exact path="/">
               <Home></Home>
-            </Route>
-            <Route exact path="/profile">
-              <Profile></Profile>
             </Route>
           </Switch>
         )}

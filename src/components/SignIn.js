@@ -1,12 +1,13 @@
 import React, { useRef } from "react";
 import classes from "./SignIn.module.css";
 import { auth } from "../firebase";
-
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../store/auth";
 
 function SignIn() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-
+  const dispatch = useDispatch();
 
   const register = (e) => {
     e.preventDefault();
@@ -31,7 +32,12 @@ function SignIn() {
         passwordRef.current.value
       )
       .then((authUser) => {
-        console.log(authUser);
+        dispatch(
+          userActions.login({
+            uid: authUser.uid,
+            email: authUser.email,
+          })
+        );
       })
       .catch((err) => {
         console.log(err);
